@@ -1,5 +1,7 @@
 .PHONY: deps/up deps/down deps/restart deps/up-alt
 
+
+
 deps/up:
 	docker compose up -d postgres
 

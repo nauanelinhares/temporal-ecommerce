@@ -8,7 +8,8 @@ import (
 
 // ProductMigration defines the migration
 // Note: This struct and its methods are part of the 'main' package now.
-type ProductMigration struct{}
+type ProductMigration struct {
+}
 
 // Name returns the name of this migration
 func (m *ProductMigration) Name() string {
@@ -17,6 +18,7 @@ func (m *ProductMigration) Name() string {
 
 // Up creates the products table
 func (m *ProductMigration) Up(db *gorm.DB) error {
+
 	return db.AutoMigrate(&models.Product{})
 }
 
@@ -27,7 +29,3 @@ func (m *ProductMigration) Down(db *gorm.DB) error {
 
 // init registers this migration. Since this file is now 'package main',
 // it calls the Register function defined in migrations.go (also package main).
-func init() {
-	// No package prefix needed as Register is in the same 'main' package.
-	Register(&ProductMigration{})
-}
