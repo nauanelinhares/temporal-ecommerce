@@ -5,10 +5,6 @@ import (
 	"temporal-ecommerce/src/repositories/interfaces"
 )
 
-type ProductRepository interface {
-	Create(product entities.Product) error
-}
-
 type ProductService struct {
 	productRepository interfaces.ProductRepository
 }

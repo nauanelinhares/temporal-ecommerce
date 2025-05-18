@@ -15,15 +15,13 @@ type Product struct {
 	Stock       uint `gorm:"not null;check:stock >= 0"`
 }
 
-func (Product) FromDomain(product entities.Product) Product {
+func (p *Product) FromDomain(product entities.Product) {
 	if product.ID == uuid.Nil {
 		product.ID = uuid.New()
 	}
-	return Product{
-		BaseModel:   gormutils.BaseModel{ID: product.ID},
-		Name:        product.Name,
-		Description: product.Description,
-		Price:       product.Price,
-		Stock:       product.Stock,
-	}
+	p.BaseModel = gormutils.BaseModel{ID: product.ID}
+	p.Name = product.Name
+	p.Description = product.Description
+	p.Price = product.Price
+	p.Stock = product.Stock
 }

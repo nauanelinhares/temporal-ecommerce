@@ -1,4 +1,4 @@
-package product
+package dtos
 
 import (
 	"temporal-ecommerce/src/domain/entities"

@@ -20,7 +20,8 @@ func NewProductRepository(db *gorm.DB) ProductRepository {
 }
 
 func (r *productRepository) Create(product entities.Product) (entities.Product, error) {
-	productModel := models.Product{}.FromDomain(product)
+	productModel := models.Product{}
+	productModel.FromDomain(product)
 
 	err := r.db.Create(&productModel).Error
 	if err != nil {
