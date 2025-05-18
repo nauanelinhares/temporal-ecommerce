@@ -12,9 +12,12 @@ type OrderMigration struct{}
 
 type Order struct {
 	gormutils.BaseModel
-	UserID    uuid.UUID       `gorm:"not null"`
-	ProductID uuid.UUID       `gorm:"not null"`
+	UserID    uuid.UUID       `gorm:"index"`
+	User      User            `gorm:"foreignKey:UserID"`
+	ProductID uuid.UUID       `gorm:"index"`
+	Product   Product         `gorm:"foreignKey:ProductID"`
 	Quantity  int             `gorm:"not null;check:quantity > 0"`
+	Price     int             `gorm:"not null"`
 	Status    entities.Status `gorm:"not null;default:pending"`
 }
 

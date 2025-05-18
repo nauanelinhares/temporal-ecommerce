@@ -13,6 +13,7 @@ type Order struct {
 	ProductID uuid.UUID       `gorm:"not null"`
 	Quantity  int             `gorm:"not null;check:quantity > 0"`
 	Status    entities.Status `gorm:"not null;default:pending"`
+	Price     int             `gorm:"not null"`
 }
 
 func (o *Order) FromDomain(order entities.Order) {
