@@ -18,6 +18,7 @@ func NewOrderService(orderRepository interfaces.OrderRepository, productService 
 }
 
 func (s *OrderService) CreateOrder(order entities.Order) (entities.Order, error) {
+
 	order.Status = entities.StatusPending
 
 	return s.orderRepository.Create(order)

@@ -19,6 +19,7 @@ func getMigrations() []Migration {
 	return []Migration{
 		&ProductMigration{},
 		&UserMigration{},
+		&OrderMigration{},
 	}
 }
 
@@ -52,6 +53,7 @@ func main() {
 	for _, migration := range migrations {
 		if *direction == "up" {
 			err = migration.Up(db)
+			fmt.Println("migration", migration.Name(), "has been up with succeded")
 		} else {
 			err = migration.Down(db)
 		}
