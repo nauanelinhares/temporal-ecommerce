@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"temporal-ecommerce/internal/config"
 
@@ -17,6 +18,9 @@ type Migration interface {
 var migrations []Migration
 
 func main() {
+	direction := flag.String("direction", "up", "direction of migration")
+	flag.Parse()
+
 	cfg, err := config.LoadConfig(".")
 	if err != nil {
 		panic("failed to load config")
@@ -39,7 +43,11 @@ func main() {
 	migrations = append(migrations, &ProductMigration{})
 
 	for _, migration := range migrations {
-		err = migration.Up(db)
+		if *direction == "up" {
+			err = migration.Up(db)
+		} else {
+			err = migration.Down(db)
+		}
 		if err != nil {
 			panic("failed to migrate")
 		}
