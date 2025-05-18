@@ -25,3 +25,13 @@ func (p *Product) FromDomain(product entities.Product) {
 	p.Price = product.Price
 	p.Stock = product.Stock
 }
+
+func (p *Product) ToDomain() entities.Product {
+	return entities.Product{
+		ID:          p.ID,
+		Name:        p.Name,
+		Description: p.Description,
+		Price:       p.Price,
+		Stock:       p.Stock,
+	}
+}

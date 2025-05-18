@@ -23,3 +23,12 @@ func (u *User) FromDomain(user entities.User) {
 	u.Email = user.Email
 	u.Wallet = user.Wallet
 }
+
+func (u *User) ToDomain() entities.User {
+	return entities.User{
+		ID:       u.ID,
+		Username: u.Username,
+		Email:    u.Email,
+		Wallet:   u.Wallet,
+	}
+}

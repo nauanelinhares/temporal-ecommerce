@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"log"
 	"temporal-ecommerce/internal/config"
-	productservice "temporal-ecommerce/src/domain/product"
-	"temporal-ecommerce/src/repositories"
+	"temporal-ecommerce/src/web/handlers"
 	"temporal-ecommerce/src/web/handlers/health"
-	"temporal-ecommerce/src/web/handlers/product"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/driver/postgres"
@@ -51,8 +49,7 @@ func main() {
 
 func setupRoutes(app *fiber.App, db *gorm.DB) {
 
-	productRepository := repositories.NewProductRepository(db)
-	productService := productservice.NewProductService(productRepository)
-	productHandler := product.NewProductHandler(productService)
-	productHandler.Routes(app)
+	handlerContainer := handlers.NewHandlerContainer(db)
+	handlerContainer.UserHandler.Routes(app)
+	handlerContainer.ProductHandler.Routes(app)
 }
