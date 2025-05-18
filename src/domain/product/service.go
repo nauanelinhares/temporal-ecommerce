@@ -18,7 +18,7 @@ func NewProductService(productRepository interfaces.ProductRepository) *ProductS
 }
 
 func (s *ProductService) CreateProduct(product entities.Product) (entities.Product, error) {
-	err := s.productRepository.Create(product)
+	product, err := s.productRepository.Create(product)
 	if err != nil {
 		return entities.Product{}, err
 	}

@@ -8,7 +8,7 @@ import (
 )
 
 type ProductRepository interface {
-	Create(product entities.Product) error
+	Create(product entities.Product) (entities.Product, error)
 }
 
 type productRepository struct {
@@ -19,7 +19,15 @@ func NewProductRepository(db *gorm.DB) ProductRepository {
 	return &productRepository{db: db}
 }
 
-func (r *productRepository) Create(product entities.Product) error {
+func (r *productRepository) Create(product entities.Product) (entities.Product, error) {
 	productModel := models.Product{}.FromDomain(product)
-	return r.db.Create(&productModel).Error
+
+	err := r.db.Create(&productModel).Error
+	if err != nil {
+		return entities.Product{}, err
+	}
+
+	product.ID = productModel.ID
+
+	return product, nil
 }

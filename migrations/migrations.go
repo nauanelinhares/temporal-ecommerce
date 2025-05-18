@@ -15,9 +15,16 @@ type Migration interface {
 	Down(db *gorm.DB) error
 }
 
-var migrations []Migration
+func getMigrations() []Migration {
+	return []Migration{
+		&ProductMigration{},
+		&UserMigration{},
+	}
+}
 
 func main() {
+	var migrations []Migration
+
 	direction := flag.String("direction", "up", "direction of migration")
 	flag.Parse()
 
@@ -40,7 +47,7 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	migrations = append(migrations, &ProductMigration{})
+	migrations = getMigrations()
 
 	for _, migration := range migrations {
 		if *direction == "up" {
