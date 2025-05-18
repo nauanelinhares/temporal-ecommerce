@@ -26,3 +26,7 @@ func (s *UserService) CreateUser(user entities.User) (entities.User, error) {
 func (s *UserService) GetUser(id uuid.UUID) (entities.User, error) {
 	return s.userRepository.Get(id)
 }
+
+func (s *UserService) UpdateUser(user entities.User) (entities.User, error) {
+	return s.userRepository.Update(user)
+}

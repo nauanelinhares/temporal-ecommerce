@@ -8,6 +8,7 @@ import (
 	"temporal-ecommerce/src/web/handlers/health"
 
 	"github.com/gofiber/fiber/v2"
+	"go.temporal.io/sdk/client"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -39,7 +40,12 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	setupRoutes(app, db)
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+
+	setupRoutes(app, db, c)
 
 	healthHandler := health.NewHealthHandler()
 	healthHandler.Routes(app)
@@ -47,9 +53,10 @@ func main() {
 	log.Fatal(app.Listen(":3000"))
 }
 
-func setupRoutes(app *fiber.App, db *gorm.DB) {
+func setupRoutes(app *fiber.App, db *gorm.DB, c client.Client) {
 
-	handlerContainer := handlers.NewHandlerContainer(db)
+	handlerContainer := handlers.NewHandlerContainer(db, c)
 	handlerContainer.UserHandler.Routes(app)
 	handlerContainer.ProductHandler.Routes(app)
+	handlerContainer.OrderHandler.Routes(app)
 }

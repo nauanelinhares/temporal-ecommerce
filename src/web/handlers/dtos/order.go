@@ -15,7 +15,6 @@ type OrderDTO struct {
 
 func (r *OrderDTO) ToDomain() entities.Order {
 	return entities.Order{
-		ID:        uuid.MustParse(r.ID),
 		UserID:    uuid.MustParse(r.UserID),
 		ProductID: uuid.MustParse(r.ProductID),
 		Quantity:  r.Quantity,

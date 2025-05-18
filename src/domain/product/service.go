@@ -30,3 +30,11 @@ func (s *ProductService) GetProduct(id uuid.UUID) (entities.Product, error) {
 	}
 	return product, nil
 }
+
+func (s *ProductService) UpdateProduct(product entities.Product) (entities.Product, error) {
+	product, err := s.productRepository.Update(product)
+	if err != nil {
+		return entities.Product{}, err
+	}
+	return product, nil
+}

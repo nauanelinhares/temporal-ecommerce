@@ -13,7 +13,7 @@ type orderRepository struct {
 	db *gorm.DB
 }
 
-func (r *orderRepository) NewOrderRepository(db *gorm.DB) interfaces.OrderRepository {
+func NewOrderRepository(db *gorm.DB) interfaces.OrderRepository {
 	return &orderRepository{db: db}
 }
 

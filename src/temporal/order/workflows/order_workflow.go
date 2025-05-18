@@ -1,6 +1,7 @@
 package workflows
 
 import (
+	"fmt"
 	"time"
 
 	"temporal-ecommerce/src/domain/entities"
@@ -19,7 +20,7 @@ type OrderWorkflowInput struct {
 // CreateOrderWorkflow orquestra a criação de um pedido.
 func CreateOrderWorkflow(ctx workflow.Context, userID uuid.UUID, productID uuid.UUID, quantity int) (entities.Order, error) {
 	ao := workflow.ActivityOptions{
-		StartToCloseTimeout: 10 * time.Minute,
+		StartToCloseTimeout: time.Minute,
 	}
 	ctx = workflow.WithActivityOptions(ctx, ao)
 
@@ -52,7 +53,7 @@ func CreateOrderWorkflow(ctx workflow.Context, userID uuid.UUID, productID uuid.
 		workflow.ExecuteActivity(ctx, act.UpdateOrderActivity, orderResult).Get(ctx, nil)
 		return entities.Order{}, err
 	}
-
+	fmt.Println(orderResult.Status, orderResult.Price)
 	err = workflow.ExecuteActivity(ctx, act.UpdateOrderActivity, orderResult).Get(ctx, &orderResult)
 	if err != nil {
 		return entities.Order{}, err
@@ -77,6 +78,7 @@ func CreateOrderWorkflow(ctx workflow.Context, userID uuid.UUID, productID uuid.
 	if err != nil {
 		return entities.Order{}, err
 	}
+	fmt.Println(orderResult.Status, orderResult.Price)
 
 	return orderResult, nil
 }

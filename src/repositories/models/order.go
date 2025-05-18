@@ -22,6 +22,7 @@ func (o *Order) FromDomain(order entities.Order) {
 	o.ProductID = order.ProductID
 	o.Quantity = order.Quantity
 	o.Status = order.Status
+	o.Price = order.Price
 }
 
 func (o *Order) ToDomain() entities.Order {

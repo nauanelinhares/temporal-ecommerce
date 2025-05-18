@@ -34,6 +34,13 @@ func (a *Activities) ValidateStockActivity(ctx context.Context, product entities
 	if product.Stock < uint(order.Quantity) {
 		return entities.Order{}, errors.New("product stock is not enough")
 	}
+	product.Stock -= uint(order.Quantity)
+
+	_, err := a.ProductService.UpdateProduct(product)
+	if err != nil {
+		return entities.Order{}, err
+	}
+
 	order.Status = entities.StatusStockValidated
 	order.Price = int(product.Price) * order.Quantity
 
@@ -55,6 +62,11 @@ func (a *Activities) GetUserActivity(ctx context.Context, userIDStr string) (ent
 func (a *Activities) ValidateUserBalanceActivity(ctx context.Context, user entities.User, order entities.Order) (entities.Order, error) {
 	if user.Wallet < order.Price {
 		return entities.Order{}, errors.New("user balance is not enough")
+	}
+	user.Wallet -= order.Price
+	_, err := a.UserService.UpdateUser(user)
+	if err != nil {
+		return entities.Order{}, err
 	}
 	order.Status = entities.StatusPaid
 	return order, nil
